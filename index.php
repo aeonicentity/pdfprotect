@@ -1,16 +1,16 @@
 <!doctype html>
 <?php
 	$error="";
+	$fileName = "document.pdf";
 	if(empty($_GET['idx'])){
 		$n = 0;
 	}else{
 		$n = $_GET['idx'];
 	}
 	
-	$imgHeight = "500";
-	$imgWidth = "800";
+	$imgWidth = "800"; # this variable will control the over-all constrained dimensions of the image to be viewed.
 	
-	$pdf = 'document.pdf['.$n.']';
+	$pdf = $fileName.'['.$n.']';
 	$fileHash = substr(md5(date("U")),0,10);
     $save = 'convertedImg/'.$fileHash.'.jpg';
 	
@@ -20,9 +20,13 @@
 		$data = file_get_contents($save);
 		$imgBase64 = 'data:image/jpg;base64,' . base64_encode($data);
 		
+		$size = getimagesize($save);
+		$imgHeight = $size[1];
+		$imgWidth = $size[0];
 		unlink($save);
 	}else{
 		$error = "End of File";
+		$imgHeight = "0";
 		$n = $n-1;
 	}
 	
@@ -37,7 +41,7 @@
 			}
 		}
 			div.PdfImage {
-				width:            100%;
+				width:            <?php echo $imgWidth;?>px;
 				height:           <?php echo $imgHeight;?>px;
 				background-image: url(<?php echo $imgBase64; ?>);
 				background-size: 100% auto;
