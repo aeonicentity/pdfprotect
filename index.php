@@ -1,7 +1,12 @@
 <!doctype html>
 <?php
 	$error="";
-	$fileName = "document.pdf";
+	if(isset($_GET['filename'])){
+		$fileName = $_GET['filename'];
+	}else{
+		$fileName = "document.pdf";
+	}
+	
 	if(empty($_GET['idx'])){
 		$n = 0;
 	}else{
@@ -41,7 +46,7 @@
 			}
 		}
 			div.PdfImage {
-				width:            <?php echo $imgWidth;?>px;
+				max-width:            <?php echo $imgWidth;?>px;
 				height:           <?php echo $imgHeight;?>px;
 				background-image: url(<?php echo $imgBase64; ?>);
 				background-size: 100% auto;
